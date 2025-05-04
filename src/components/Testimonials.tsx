@@ -7,21 +7,21 @@ const testimonials = [
     id: 1,
     name: 'Alexandra Thompson',
     role: 'Luxury Collector',
-    content: 'I've purchased several vintage watches through Luxe Verified and the authentication process gives me complete confidence. The condition descriptions are spot-on.',
+    content: "I've purchased several vintage watches through Luxe Verified and the authentication process gives me complete confidence. The condition descriptions are spot-on.",
     rating: 5
   },
   {
     id: 2,
     name: 'Michael Chen',
     role: 'Fashion Enthusiast',
-    content: 'Found my dream Birkin for a fraction of retail price. The digital certificate and packaging made it feel like I was buying directly from the brand.',
+    content: "Found my dream Birkin for a fraction of retail price. The digital certificate and packaging made it feel like I was buying directly from the brand.",
     rating: 5
   },
   {
     id: 3,
     name: 'Sophia Rodriguez',
     role: 'Style Consultant',
-    content: 'As someone who works in the fashion industry, I appreciate Luxe Verified's attention to detail and the depth of information provided about each item's provenance.',
+    content: "As someone who works in the fashion industry, I appreciate Luxe Verified's attention to detail and the depth of information provided about each item's provenance.",
     rating: 5
   }
 ];
