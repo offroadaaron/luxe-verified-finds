@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
@@ -8,7 +7,7 @@ import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronDown, ChevronUp, Filter, SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, ChevronUp, Filter, SlidersHorizontal, X } from 'lucide-react';
 
 // Mock data for products
 const productsData: Product[] = [
