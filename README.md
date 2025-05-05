@@ -60,6 +60,23 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Testing
+
+This project is set up for easy testing with [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). To get started:
+
+```sh
+npm install --save-dev vitest @testing-library/react @testing-library/jest-dom
+```
+
+- Place test files next to the components they test, e.g. `Button.test.tsx`.
+- Run tests with:
+
+```sh
+npx vitest
+```
+
+See the [Vitest docs](https://vitest.dev/) for more details.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/c202543c-d7a0-45e6-9fd5-d6cc99bfcf32) and click on Share -> Publish.

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -92,6 +91,21 @@ const products = [
 ];
 
 const AdminDashboard = () => {
+  // TODO: Replace this with real authentication logic
+  const isAdmin = true; // Set to false to simulate unauthorized access
+
+  if (!isAdmin) {
+    return (
+      <div className="p-8 text-center text-red-600">
+        <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
+        <p>You do not have permission to view this page.</p>
+        <Link to="/">
+          <Button className="mt-4">Go Home</Button>
+        </Link>
+      </div>
+    );
+  }
+
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
   const handleSelectAll = () => {
