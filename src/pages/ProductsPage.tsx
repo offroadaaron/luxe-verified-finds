@@ -19,7 +19,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1591561954557-26941169b49e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80'],
     condition: 'Excellent',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
+    gender: 'Womens'
   },
   {
     id: '2',
@@ -30,7 +31,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1526045431048-f857369baa09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
     condition: 'Like New',
     authenticated: true,
-    category: 'Watches'
+    category: 'Watches',
+    gender: 'Mens'
   },
   {
     id: '3',
@@ -41,7 +43,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80'],
     condition: 'Very Good',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
+    gender: 'Womens'
   },
   {
     id: '4',
@@ -51,7 +54,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
     condition: 'Excellent',
     authenticated: true,
-    category: 'Jewelry'
+    category: 'Jewelry',
+    gender: 'Womens'
   },
   {
     id: '5',
@@ -62,7 +66,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1575032617751-6ddec2089882?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
     condition: 'Good',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
+    gender: 'Womens'
   },
   {
     id: '6',
@@ -72,7 +77,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80'],
     condition: 'Very Good',
     authenticated: true,
-    category: 'Watches'
+    category: 'Watches',
+    gender: 'Mens'
   },
   {
     id: '7',
@@ -82,7 +88,8 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80'],
     condition: 'Excellent',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
+    gender: 'Womens'
   },
   {
     id: '8',
@@ -93,13 +100,15 @@ const productsData: Product[] = [
     images: ['https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1654&q=80'],
     condition: 'Like New',
     authenticated: true,
-    category: 'Watches'
+    category: 'Watches',
+    gender: 'Mens'
   }
 ];
 
 const brands = ['All Brands', 'Hermès', 'Rolex', 'Gucci', 'Cartier', 'Chanel', 'Audemars Piguet', 'Bvlgari'];
 const categories = ['All Categories', 'Handbags', 'Watches', 'Jewelry', 'Accessories'];
 const conditions = ['All Conditions', 'Like New', 'Excellent', 'Very Good', 'Good'];
+const genders = ['All', 'Mens', 'Womens'];
 
 const ProductsPage = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -108,6 +117,7 @@ const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedCondition, setSelectedCondition] = useState('All Conditions');
   const [selectedSort, setSelectedSort] = useState('featured');
+  const [selectedGender, setSelectedGender] = useState('All');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   // Filter section toggle states (for desktop)
@@ -128,6 +138,14 @@ const ProductsPage = () => {
 
     if (selectedCondition !== 'All Conditions') {
       filtered = filtered.filter(product => product.condition === selectedCondition);
+    }
+
+    if (selectedGender !== 'All') {
+      filtered = filtered.filter(product => {
+        // Assume product.gender exists; fallback to show all if not set
+        if (!('gender' in product)) return true;
+        return product.gender && product.gender.toLowerCase() === selectedGender.toLowerCase();
+      });
     }
 
     filtered = filtered.filter(product => 
@@ -197,6 +215,23 @@ const ProductsPage = () => {
           {/* Desktop Filters Sidebar */}
           <div className="hidden md:block w-72 flex-shrink-0">
             <div className="space-y-6">
+              {/* Gender Filter */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Gender</h3>
+                <div className="flex gap-2">
+                  {genders.map(g => (
+                    <Button
+                      key={g}
+                      variant={selectedGender === g ? "default" : "outline"}
+                      className="text-xs px-4 py-2"
+                      onClick={() => setSelectedGender(g)}
+                    >
+                      {g}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
               {/* Price Range Filter */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -330,6 +365,7 @@ const ProductsPage = () => {
                   setSelectedBrand('All Brands');
                   setSelectedCategory('All Categories');
                   setSelectedCondition('All Conditions');
+                  setSelectedGender('All');
                   setVerifiedOnly(false);
                 }}
               >

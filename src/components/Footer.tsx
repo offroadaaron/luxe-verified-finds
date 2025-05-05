@@ -1,7 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
+
+// Temporary homepage config for social links
+const homepageConfig = {
+  instagram: "https://instagram.com/yourbrand",
+  facebook: "https://facebook.com/yourbrand",
+  twitter: "https://twitter.com/yourbrand",
+  tiktok: "https://tiktok.com/@yourbrand",
+};
 
 const Footer = () => {
   return (
@@ -19,13 +26,13 @@ const Footer = () => {
               Curated luxury items authenticated by experts and technology for complete peace of mind.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
+              <a href={homepageConfig.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
+              <a href={homepageConfig.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
+              <a href={homepageConfig.twitter} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-white hover:border-white transition-colors">
                 <Twitter className="h-5 w-5" />
               </a>
             </div>
@@ -67,7 +74,7 @@ const Footer = () => {
         
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} Luxe Verified Finds. All rights reserved.
+            {new Date().getFullYear()} Luxe Verified Finds. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
             <img src="https://cdn-icons-png.flaticon.com/512/174/174861.png" alt="PayPal" className="h-8 opacity-70 hover:opacity-100 transition-opacity" />

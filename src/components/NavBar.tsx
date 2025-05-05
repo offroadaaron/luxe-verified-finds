@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -28,6 +27,12 @@ const NavBar = () => {
           <div className="hidden lg:flex items-center space-x-8">
             <Link to="/products" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               All Products
+            </Link>
+            <Link to="/categories/mens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+              Mens
+            </Link>
+            <Link to="/categories/womens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+              Womens
             </Link>
             <Link to="/categories/handbags" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Handbags
@@ -87,6 +92,20 @@ const NavBar = () => {
             onClick={toggleMenu}
           >
             All Products
+          </Link>
+          <Link
+            to="/categories/mens"
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
+            onClick={toggleMenu}
+          >
+            Mens
+          </Link>
+          <Link
+            to="/categories/womens"
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
+            onClick={toggleMenu}
+          >
+            Womens
           </Link>
           <Link
             to="/categories/handbags"

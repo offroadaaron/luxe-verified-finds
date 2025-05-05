@@ -1,13 +1,19 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// Temporary context for homepage config (could be lifted to App or a global store)
+const homepageConfig = {
+  heroImage: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+};
+
 const Hero = () => {
+  // In a real app, get this from context or props
+  const heroImage = homepageConfig.heroImage;
   return (
     <div className="relative bg-luxe-charcoal text-white">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1594408055262-e64789615bef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-30" />
+      <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url('${heroImage}')` }} />
       <div className="relative luxe-container py-24 md:py-32">
         <div className="max-w-lg animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6">

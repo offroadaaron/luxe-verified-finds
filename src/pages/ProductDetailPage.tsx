@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
@@ -11,23 +10,67 @@ import { Heart, ShoppingBag, Shield, Award, ArrowRight, QrCode, Share2 } from 'l
 import { Product } from '@/components/ProductCard';
 
 // Mock product data
-const productData: Product = {
-  id: '1',
-  name: 'Birkin 30 Togo Leather Bag',
-  brand: 'Hermès',
-  price: 18500,
-  images: [
-    'https://images.unsplash.com/photo-1591561954557-26941169b49e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    'https://images.unsplash.com/photo-1604006852748-903fecf65d57?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    'https://images.unsplash.com/photo-1594408050689-0a6e8eb97cfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-    'https://images.unsplash.com/photo-1594408555981-c4e3bb1f4d73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
-  ],
-  condition: 'Excellent',
-  authenticated: true,
-  category: 'Handbags'
-};
+const productsData: Product[] = [
+  {
+    id: '1',
+    name: 'Birkin 30 Togo Leather Bag',
+    brand: 'Hermès',
+    price: 18500,
+    images: [
+      'https://images.unsplash.com/photo-1591561954557-26941169b49e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+      'https://images.unsplash.com/photo-1604006852748-903fecf65d57?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+      'https://images.unsplash.com/photo-1594408050689-0a6e8eb97cfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+      'https://images.unsplash.com/photo-1594408555981-c4e3bb1f4d73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
+    ],
+    condition: 'Excellent',
+    authenticated: true,
+    category: 'Handbags',
+  },
+  {
+    id: '2',
+    name: 'Submariner Date 41mm',
+    brand: 'Rolex',
+    price: 15750,
+    originalPrice: 17800,
+    images: ['https://images.unsplash.com/photo-1526045431048-f857369baa09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
+    condition: 'Like New',
+    authenticated: true,
+    category: 'Watches',
+  },
+  {
+    id: '3',
+    name: 'Double G Marmont Bag',
+    brand: 'Gucci',
+    price: 2350,
+    originalPrice: 2980,
+    images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80'],
+    condition: 'Very Good',
+    authenticated: true,
+    category: 'Handbags',
+  },
+  {
+    id: '4',
+    name: 'Love Bracelet Yellow Gold',
+    brand: 'Cartier',
+    price: 6450,
+    images: ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
+    condition: 'Excellent',
+    authenticated: true,
+    category: 'Jewelry',
+  },
+  {
+    id: '5',
+    name: 'Classic Flap Bag Medium',
+    brand: 'Chanel',
+    price: 7500,
+    originalPrice: 8800,
+    images: ['https://images.unsplash.com/photo-1512436991641-6745cdb1723f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80'],
+    condition: 'Good',
+    authenticated: true,
+    category: 'Handbags',
+  },
+];
 
-// Additional product details
 const productDetails = {
   description: 'The iconic Birkin 30 in Togo leather with gold hardware. This timeless piece features a spacious interior, signature lock closure, and protective feet. The bag is in excellent condition with minimal signs of wear on the corners.',
   color: 'Etoupe',
@@ -43,14 +86,14 @@ const productDetails = {
   sustainabilityImpact: {
     waterSaved: '8,500 liters',
     co2Reduced: '145 kg',
-    wasteReduced: '2.3 kg'
+    wasteReduced: '2.3 kg',
   },
   authenticationDetails: {
     authenticatedBy: 'Sarah Johnson, Senior Authenticator',
     date: 'May 15, 2023',
     certificateId: 'LXV-H-12345-B30',
-    authenticationNotes: 'Hardware weight, stitching pattern, and leather quality all verified as authentic.'
-  }
+    authenticationNotes: 'Hardware weight, stitching pattern, and leather quality all verified as authentic.',
+  },
 };
 
 const similarProducts: Product[] = [
@@ -63,7 +106,7 @@ const similarProducts: Product[] = [
     images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80'],
     condition: 'Very Good',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
   },
   {
     id: '5',
@@ -74,7 +117,7 @@ const similarProducts: Product[] = [
     images: ['https://images.unsplash.com/photo-1575032617751-6ddec2089882?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'],
     condition: 'Good',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
   },
   {
     id: '7',
@@ -84,12 +127,23 @@ const similarProducts: Product[] = [
     images: ['https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80'],
     condition: 'Excellent',
     authenticated: true,
-    category: 'Handbags'
+    category: 'Handbags',
   },
 ];
 
 const ProductDetailPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+  const product = productsData.find((p) => p.id === id);
+
+  if (!product) {
+    return (
+      <div className="max-w-xl mx-auto p-8 text-center">
+        <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+        <p className="mb-6">Sorry, the product you are looking for does not exist.</p>
+      </div>
+    );
+  }
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -107,13 +161,13 @@ const ProductDetailPage = () => {
           <div>
             <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4">
               <img 
-                src={productData.images[selectedImage]} 
-                alt={productData.name}
+                src={product.images[selectedImage]} 
+                alt={product.name}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {productData.images.map((image, index) => (
+              {product.images.map((image, index) => (
                 <button 
                   key={index}
                   className={`aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800 ${selectedImage === index ? 'ring-2 ring-luxe-gold' : ''}`}
@@ -121,7 +175,7 @@ const ProductDetailPage = () => {
                 >
                   <img 
                     src={image} 
-                    alt={`${productData.name} - View ${index + 1}`}
+                    alt={`${product.name} - View ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -132,7 +186,7 @@ const ProductDetailPage = () => {
           {/* Product Info */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-medium text-luxe-gold">{productData.brand}</h2>
+              <h2 className="text-xl font-medium text-luxe-gold">{product.brand}</h2>
               <div className="flex space-x-3">
                 <button 
                   className="text-gray-500 hover:text-luxe-gold"
@@ -146,24 +200,24 @@ const ProductDetailPage = () => {
               </div>
             </div>
             
-            <h1 className="text-3xl font-serif font-medium mb-4">{productData.name}</h1>
+            <h1 className="text-3xl font-serif font-medium mb-4">{product.name}</h1>
             
             <div className="flex flex-wrap gap-2 mb-4">
-              {productData.authenticated && (
+              {product.authenticated && (
                 <Badge className="bg-luxe-gold text-black font-medium">
                   <Shield className="h-3 w-3 mr-1" /> Verified Authentic
                 </Badge>
               )}
               <Badge variant="outline" className="border-muted-foreground">
-                {productData.condition} Condition
+                {product.condition} Condition
               </Badge>
             </div>
             
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-2xl font-bold">${productData.price.toLocaleString()}</span>
-              {productDetails.retailPrice && (
+              <span className="text-2xl font-bold">${product.price.toLocaleString()}</span>
+              {product.originalPrice && (
                 <span className="text-sm text-muted-foreground">
-                  Retail: ${productDetails.retailPrice.toLocaleString()}
+                  Retail: ${product.originalPrice.toLocaleString()}
                 </span>
               )}
             </div>
