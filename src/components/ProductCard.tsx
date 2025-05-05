@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -15,6 +14,7 @@ export interface Product {
   condition: string;
   authenticated: boolean;
   category: string;
+  gender?: string; // Added gender property as optional
 }
 
 interface ProductCardProps {

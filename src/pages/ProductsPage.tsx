@@ -142,9 +142,8 @@ const ProductsPage = () => {
 
     if (selectedGender !== 'All') {
       filtered = filtered.filter(product => {
-        // Assume product.gender exists; fallback to show all if not set
-        if (!('gender' in product)) return true;
-        return product.gender && product.gender.toLowerCase() === selectedGender.toLowerCase();
+        if (!product.gender) return false;
+        return product.gender.toLowerCase() === selectedGender.toLowerCase();
       });
     }
 

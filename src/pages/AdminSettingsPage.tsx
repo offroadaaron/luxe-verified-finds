@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
 
 const defaultSettings = {
   siteName: "Luxe Verified Finds",
@@ -15,10 +17,12 @@ const AdminSettingsPage = () => {
   const [saved, setSaved] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
     setSettings(s => ({
       ...s,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: e.target.type === "checkbox" ? checked : value,
     }));
     setSaved(false);
   };
@@ -26,6 +30,7 @@ const AdminSettingsPage = () => {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setSaved(true);
+    toast.success("Settings saved successfully");
   };
 
   return (
