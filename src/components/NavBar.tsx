@@ -1,15 +1,31 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Search, ShoppingBag, Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navigateToProducts = (params = {}) => {
+    const searchParams = new URLSearchParams();
+    
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) searchParams.set(key, value.toString());
+    });
+    
+    const queryString = searchParams.toString();
+    navigate(`/products${queryString ? `?${queryString}` : ''}`);
+    
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
   };
 
   return (
@@ -26,24 +42,42 @@ const NavBar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            <Link to="/products" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <button 
+              onClick={() => navigateToProducts()} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               All Products
-            </Link>
-            <Link to="/products?gender=Mens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => navigateToProducts({ gender: 'Mens' })} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               Mens
-            </Link>
-            <Link to="/products?gender=Womens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => navigateToProducts({ gender: 'Womens' })} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               Womens
-            </Link>
-            <Link to="/products?category=Handbags" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => navigateToProducts({ category: 'Handbags' })} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               Handbags
-            </Link>
-            <Link to="/products?category=Watches" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => navigateToProducts({ category: 'Watches' })} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               Watches
-            </Link>
-            <Link to="/products?category=Jewelry" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            </button>
+            <button 
+              onClick={() => navigateToProducts({ category: 'Jewelry' })} 
+              className="text-sm font-medium hover:text-luxe-gold transition-colors"
+            >
               Jewelry
-            </Link>
+            </button>
             <Link to="/about" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               About Us
             </Link>
@@ -87,48 +121,42 @@ const NavBar = () => {
       {/* Mobile menu, show/hide based on menu state */}
       <div className={cn("lg:hidden", isMenuOpen ? "block" : "hidden")}>
         <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link
-            to="/products"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts()}
           >
             All Products
-          </Link>
-          <Link
-            to="/products?gender=Mens"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          </button>
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts({ gender: 'Mens' })}
           >
             Mens
-          </Link>
-          <Link
-            to="/products?gender=Womens"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          </button>
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts({ gender: 'Womens' })}
           >
             Womens
-          </Link>
-          <Link
-            to="/products?category=Handbags"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          </button>
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts({ category: 'Handbags' })}
           >
             Handbags
-          </Link>
-          <Link
-            to="/products?category=Watches"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          </button>
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts({ category: 'Watches' })}
           >
             Watches
-          </Link>
-          <Link
-            to="/products?category=Jewelry"
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
-            onClick={toggleMenu}
+          </button>
+          <button
+            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
+            onClick={() => navigateToProducts({ category: 'Jewelry' })}
           >
             Jewelry
-          </Link>
+          </button>
           <Link
             to="/about"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
