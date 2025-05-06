@@ -39,7 +39,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminLayout from "@/components/AdminLayout";
-import { useIsMobile } from "@/hooks/useIsMobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Mock products data
 const products = [
@@ -140,7 +140,7 @@ const inventoryTurnover = averageInventory > 0 ? cogs / averageInventory : 0;
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const isAdmin = typeof window !== 'undefined' && localStorage.getItem("isAdmin") === "true";
-  const isMobile = useIsMobile(); // Add this hook
+  const isMobile = useIsMobile(); // Now using the correct import
   
   if (!isAdmin) {
     navigate('/admin/login');
