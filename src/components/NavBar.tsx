@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -28,19 +29,19 @@ const NavBar = () => {
             <Link to="/products" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               All Products
             </Link>
-            <Link to="/categories/mens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <Link to="/products?gender=Mens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Mens
             </Link>
-            <Link to="/categories/womens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <Link to="/products?gender=Womens" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Womens
             </Link>
-            <Link to="/categories/handbags" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <Link to="/products?category=Handbags" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Handbags
             </Link>
-            <Link to="/categories/watches" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <Link to="/products?category=Watches" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Watches
             </Link>
-            <Link to="/categories/jewelry" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+            <Link to="/products?category=Jewelry" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               Jewelry
             </Link>
             <Link to="/about" className="text-sm font-medium hover:text-luxe-gold transition-colors">
@@ -94,35 +95,35 @@ const NavBar = () => {
             All Products
           </Link>
           <Link
-            to="/categories/mens"
+            to="/products?gender=Mens"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
             onClick={toggleMenu}
           >
             Mens
           </Link>
           <Link
-            to="/categories/womens"
+            to="/products?gender=Womens"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
             onClick={toggleMenu}
           >
             Womens
           </Link>
           <Link
-            to="/categories/handbags"
+            to="/products?category=Handbags"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
             onClick={toggleMenu}
           >
             Handbags
           </Link>
           <Link
-            to="/categories/watches"
+            to="/products?category=Watches"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
             onClick={toggleMenu}
           >
             Watches
           </Link>
           <Link
-            to="/categories/jewelry"
+            to="/products?category=Jewelry"
             className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
             onClick={toggleMenu}
           >

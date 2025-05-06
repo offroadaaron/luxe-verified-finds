@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import ProductCard, { Product } from '@/components/ProductCard';
@@ -8,6 +10,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronDown, ChevronUp, Filter, SlidersHorizontal, X } from 'lucide-react';
+
+// Updated Product type definition to include gender
+declare module '@/components/ProductCard' {
+  interface Product {
+    gender?: string;
+  }
+}
 
 // Mock data for products
 const productsData: Product[] = [
@@ -111,6 +120,7 @@ const conditions = ['All Conditions', 'Like New', 'Excellent', 'Very Good', 'Goo
 const genders = ['All', 'Mens', 'Womens'];
 
 const ProductsPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 50000]);
   const [selectedBrand, setSelectedBrand] = useState('All Brands');
@@ -124,6 +134,35 @@ const ProductsPage = () => {
   const [brandSectionOpen, setBrandSectionOpen] = useState(true);
   const [categorySectionOpen, setCategorySectionOpen] = useState(true);
   const [conditionSectionOpen, setConditionSectionOpen] = useState(true);
+
+  // Read filters from URL parameters
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    const genderParam = searchParams.get('gender');
+    
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    }
+    
+    if (genderParam) {
+      setSelectedGender(genderParam);
+    }
+  }, [searchParams]);
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    
+    if (selectedCategory !== 'All Categories') {
+      params.set('category', selectedCategory);
+    }
+    
+    if (selectedGender !== 'All') {
+      params.set('gender', selectedGender);
+    }
+    
+    setSearchParams(params, { replace: true });
+  }, [selectedCategory, selectedGender, setSearchParams]);
 
   const filterProducts = () => {
     let filtered = [...productsData];
@@ -143,7 +182,7 @@ const ProductsPage = () => {
     if (selectedGender !== 'All') {
       filtered = filtered.filter(product => {
         if (!product.gender) return false;
-        return product.gender.toLowerCase() === selectedGender.toLowerCase();
+        return product.gender === selectedGender;
       });
     }
 
@@ -174,6 +213,35 @@ const ProductsPage = () => {
 
   const toggleMobileFilters = () => {
     setMobileFiltersOpen(!mobileFiltersOpen);
+  };
+
+  const updateFilter = (type: string, value: string) => {
+    switch (type) {
+      case 'brand':
+        setSelectedBrand(value);
+        break;
+      case 'category':
+        setSelectedCategory(value);
+        break;
+      case 'condition':
+        setSelectedCondition(value);
+        break;
+      case 'gender':
+        setSelectedGender(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const resetFilters = () => {
+    setPriceRange([0, 50000]);
+    setSelectedBrand('All Brands');
+    setSelectedCategory('All Categories');
+    setSelectedCondition('All Conditions');
+    setSelectedGender('All');
+    setVerifiedOnly(false);
+    setSearchParams({});
   };
 
   return (
@@ -223,7 +291,7 @@ const ProductsPage = () => {
                       key={g}
                       variant={selectedGender === g ? "default" : "outline"}
                       className="text-xs px-4 py-2"
-                      onClick={() => setSelectedGender(g)}
+                      onClick={() => updateFilter('gender', g)}
                     >
                       {g}
                     </Button>
@@ -270,7 +338,7 @@ const ProductsPage = () => {
                           id={brand}
                           name="brand"
                           checked={selectedBrand === brand}
-                          onChange={() => setSelectedBrand(brand)}
+                          onChange={() => updateFilter('brand', brand)}
                           className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                         />
                         <Label htmlFor={brand}>{brand}</Label>
@@ -299,7 +367,7 @@ const ProductsPage = () => {
                           id={category}
                           name="category"
                           checked={selectedCategory === category}
-                          onChange={() => setSelectedCategory(category)}
+                          onChange={() => updateFilter('category', category)}
                           className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                         />
                         <Label htmlFor={category}>{category}</Label>
@@ -328,7 +396,7 @@ const ProductsPage = () => {
                           id={condition}
                           name="condition"
                           checked={selectedCondition === condition}
-                          onChange={() => setSelectedCondition(condition)}
+                          onChange={() => updateFilter('condition', condition)}
                           className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                         />
                         <Label htmlFor={condition}>{condition}</Label>
@@ -359,14 +427,7 @@ const ProductsPage = () => {
               <Button 
                 variant="outline"
                 className="w-full border-luxe-gold/30"
-                onClick={() => {
-                  setPriceRange([0, 50000]);
-                  setSelectedBrand('All Brands');
-                  setSelectedCategory('All Categories');
-                  setSelectedCondition('All Conditions');
-                  setSelectedGender('All');
-                  setVerifiedOnly(false);
-                }}
+                onClick={resetFilters}
               >
                 Reset Filters
               </Button>
@@ -384,7 +445,7 @@ const ProductsPage = () => {
               </div>
               
               <div className="space-y-6">
-                {/* Mobile filter content - simplified for brevity */}
+                {/* Sort By */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Sort By</h3>
                   <Select value={selectedSort} onValueChange={setSelectedSort}>
@@ -400,8 +461,112 @@ const ProductsPage = () => {
                   </Select>
                 </div>
                 
-                {/* Similar filter sections as in the desktop version */}
-                {/* Simplified for brevity */}
+                {/* Gender Filter - Mobile */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Gender</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {genders.map(g => (
+                      <Button
+                        key={g}
+                        variant={selectedGender === g ? "default" : "outline"}
+                        className="text-xs px-4 py-2"
+                        onClick={() => updateFilter('gender', g)}
+                      >
+                        {g}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Price Range - Mobile */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Price Range</h3>
+                  <Slider 
+                    defaultValue={[0, 50000]} 
+                    min={0} 
+                    max={50000} 
+                    step={500}
+                    value={priceRange}
+                    onValueChange={setPriceRange}
+                    className="py-4"
+                  />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">${priceRange[0].toLocaleString()}</span>
+                    <span className="text-sm text-muted-foreground">${priceRange[1].toLocaleString()}</span>
+                  </div>
+                </div>
+                
+                {/* Brand Filter - Mobile */}
+                <div className="space-y-2 border-t border-border pt-4">
+                  <h3 className="text-lg font-medium mb-2">Brand</h3>
+                  <div className="space-y-2">
+                    {brands.map((brand) => (
+                      <div key={brand} className="flex items-center space-x-2">
+                        <input 
+                          type="radio"
+                          id={`mobile-${brand}`}
+                          name="mobile-brand"
+                          checked={selectedBrand === brand}
+                          onChange={() => updateFilter('brand', brand)}
+                          className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
+                        />
+                        <Label htmlFor={`mobile-${brand}`}>{brand}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Category Filter - Mobile */}
+                <div className="space-y-2 border-t border-border pt-4">
+                  <h3 className="text-lg font-medium mb-2">Category</h3>
+                  <div className="space-y-2">
+                    {categories.map((category) => (
+                      <div key={category} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          id={`mobile-${category}`}
+                          name="mobile-category"
+                          checked={selectedCategory === category}
+                          onChange={() => updateFilter('category', category)}
+                          className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
+                        />
+                        <Label htmlFor={`mobile-${category}`}>{category}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Condition Filter - Mobile */}
+                <div className="space-y-2 border-t border-border pt-4">
+                  <h3 className="text-lg font-medium mb-2">Condition</h3>
+                  <div className="space-y-2">
+                    {conditions.map((condition) => (
+                      <div key={condition} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          id={`mobile-${condition}`}
+                          name="mobile-condition"
+                          checked={selectedCondition === condition}
+                          onChange={() => updateFilter('condition', condition)}
+                          className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
+                        />
+                        <Label htmlFor={`mobile-${condition}`}>{condition}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Verified Only - Mobile */}
+                <div className="border-t border-border pt-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="mobile-verified-only" 
+                      checked={verifiedOnly}
+                      onCheckedChange={(checked) => setVerifiedOnly(!!checked)}
+                    />
+                    <Label htmlFor="mobile-verified-only">Verified Authentic Only</Label>
+                  </div>
+                </div>
                 
                 <div className="pt-4 flex flex-col space-y-3">
                   <Button 
@@ -415,7 +580,8 @@ const ProductsPage = () => {
                     variant="outline"
                     className="w-full border-luxe-gold/30"
                     onClick={() => {
-                      // Reset filters
+                      resetFilters();
+                      toggleMobileFilters();
                     }}
                   >
                     Reset Filters
