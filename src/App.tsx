@@ -1,8 +1,9 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -22,8 +23,7 @@ const queryClient = new QueryClient();
 function ProtectedAdminRoute({ children }: { children?: React.ReactNode }) {
   const isAdmin = typeof window !== 'undefined' && localStorage.getItem("isAdmin") === "true";
   if (!isAdmin) {
-    window.location.replace("/admin/login");
-    return null;
+    return <Navigate to="/admin/login" replace />;
   }
   return children ? <>{children}</> : <AdminDashboard />;
 }
@@ -45,7 +45,7 @@ const App = () => (
             <Route path="/admin/orders" element={<ProtectedAdminRoute><AdminOrdersPage /></ProtectedAdminRoute>} />
             <Route path="/admin/customers" element={<ProtectedAdminRoute><AdminCustomersPage /></ProtectedAdminRoute>} />
             <Route path="/admin/settings" element={<ProtectedAdminRoute><AdminSettingsPage /></ProtectedAdminRoute>} />
-            <Route path="/admin/homepage" element={<AdminHomepageEditorPage />} />
+            <Route path="/admin/homepage" element={<ProtectedAdminRoute><AdminHomepageEditorPage /></ProtectedAdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

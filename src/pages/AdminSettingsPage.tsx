@@ -4,6 +4,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const defaultSettings = {
   siteName: "Luxe Verified Finds",
@@ -15,6 +16,7 @@ const defaultSettings = {
 const AdminSettingsPage = () => {
   const [settings, setSettings] = useState(defaultSettings);
   const [saved, setSaved] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -35,8 +37,8 @@ const AdminSettingsPage = () => {
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl font-bold mb-6">Admin Settings</h1>
-      <form onSubmit={handleSave} className="max-w-xl space-y-6">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Admin Settings</h1>
+      <form onSubmit={handleSave} className="w-full max-w-xl space-y-4 md:space-y-6">
         <div>
           <label className="block mb-1 font-medium">Site Name</label>
           <Input name="siteName" value={settings.siteName} onChange={handleChange} />
@@ -47,7 +49,12 @@ const AdminSettingsPage = () => {
         </div>
         <div>
           <label className="block mb-1 font-medium">Theme</label>
-          <select name="theme" value={settings.theme} onChange={handleChange} className="border rounded px-2 py-1">
+          <select 
+            name="theme" 
+            value={settings.theme} 
+            onChange={handleChange} 
+            className="w-full border rounded px-2 py-1.5"
+          >
             <option value="light">Light</option>
             <option value="dark">Dark</option>
           </select>
@@ -63,12 +70,13 @@ const AdminSettingsPage = () => {
           />
           <label htmlFor="maintenance" className="font-medium">Maintenance Mode</label>
         </div>
-        <Button type="submit">Save Settings</Button>
+        <Button type="submit" className="w-full sm:w-auto">Save Settings</Button>
         {saved && <div className="text-green-600 text-sm">Settings saved (mock only)</div>}
       </form>
-      <div className="mt-10">
+      
+      <div className="mt-8 md:mt-10 p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
         <h2 className="text-lg font-bold mb-2">Current Settings</h2>
-        <ul className="text-sm">
+        <ul className="text-sm space-y-2">
           <li><strong>Site Name:</strong> {settings.siteName}</li>
           <li><strong>Support Email:</strong> {settings.supportEmail}</li>
           <li><strong>Theme:</strong> {settings.theme}</li>

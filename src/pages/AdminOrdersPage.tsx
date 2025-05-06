@@ -1,8 +1,10 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import AdminLayout from "@/components/AdminLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const mockOrders = [
   { id: "1001", customer: "Jane Doe", product: "Birkin 30 Togo Leather Bag", total: 18500, status: "Shipped", date: "2024-04-01" },
@@ -18,6 +20,7 @@ const statusOptions = ["All", "Shipped", "Processing", "Delivered", "Cancelled"]
 const AdminOrdersPage = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
+  const isMobile = useIsMobile();
 
   const filteredOrders = mockOrders.filter(order => {
     const matchesSearch =
@@ -30,58 +33,63 @@ const AdminOrdersPage = () => {
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl font-bold mb-6">Orders</h1>
-      <div className="flex flex-wrap gap-4 mb-6 items-center">
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Orders</h1>
+      <div className="flex flex-col md:flex-row md:flex-wrap gap-4 mb-6 items-start md:items-center">
         <Input
-          placeholder="Search by order, customer, or product..."
+          placeholder="Search orders..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-64"
+          className="w-full md:w-64"
         />
         <select
           value={status}
           onChange={e => setStatus(e.target.value)}
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1 w-full md:w-auto"
         >
           {statusOptions.map(option => (
             <option key={option} value={option}>{option}</option>
           ))}
         </select>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Order ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Product</TableHead>
-            <TableHead>Total</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredOrders.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center">No orders found.</TableCell>
-            </TableRow>
-          ) : (
-            filteredOrders.map(order => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{order.customer}</TableCell>
-                <TableCell>{order.product}</TableCell>
-                <TableCell>${order.total.toLocaleString()}</TableCell>
-                <TableCell>{order.status}</TableCell>
-                <TableCell>{order.date}</TableCell>
-                <TableCell>
-                  <Button size="sm" variant="outline">View</Button>
-                </TableCell>
+      
+      <div className="overflow-x-auto">
+        <div className={isMobile ? "min-w-[600px]" : ""}>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Order ID</TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead className="hidden md:table-cell">Product</TableHead>
+                <TableHead>Total</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="hidden md:table-cell">Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredOrders.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center">No orders found.</TableCell>
+                </TableRow>
+              ) : (
+                filteredOrders.map(order => (
+                  <TableRow key={order.id}>
+                    <TableCell>{order.id}</TableCell>
+                    <TableCell>{order.customer}</TableCell>
+                    <TableCell className="hidden md:table-cell">{order.product}</TableCell>
+                    <TableCell>${order.total.toLocaleString()}</TableCell>
+                    <TableCell>{order.status}</TableCell>
+                    <TableCell className="hidden md:table-cell">{order.date}</TableCell>
+                    <TableCell>
+                      <Button size="sm" variant="outline">View</Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </AdminLayout>
   );
 };

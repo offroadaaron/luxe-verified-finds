@@ -1,7 +1,10 @@
+
 import React, { useState } from "react";
 import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const defaultHomepageConfig = {
   instagram: "https://instagram.com/yourbrand",
@@ -15,6 +18,7 @@ const defaultHomepageConfig = {
 const AdminHomepageEditorPage = () => {
   const [config, setConfig] = useState(defaultHomepageConfig);
   const [saved, setSaved] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,42 +41,54 @@ const AdminHomepageEditorPage = () => {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setSaved(true);
-    // In a real app, save to backend or global state
+    toast.success("Homepage settings saved successfully");
   };
 
   return (
     <AdminLayout>
-      <h1 className="text-2xl font-bold mb-6">Homepage Editor</h1>
-      <form onSubmit={handleSave} className="max-w-xl space-y-6">
-        <div>
-          <label className="block mb-1 font-medium">Instagram URL</label>
-          <Input name="instagram" value={config.instagram} onChange={handleChange} />
+      <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Homepage Editor</h1>
+      <form onSubmit={handleSave} className="w-full max-w-xl space-y-4 md:space-y-6">
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium">Social Media Links</h2>
+          <div>
+            <label className="block mb-1 font-medium">Instagram URL</label>
+            <Input name="instagram" value={config.instagram} onChange={handleChange} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Facebook URL</label>
+            <Input name="facebook" value={config.facebook} onChange={handleChange} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Twitter/X URL</label>
+            <Input name="twitter" value={config.twitter} onChange={handleChange} />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">TikTok URL</label>
+            <Input name="tiktok" value={config.tiktok} onChange={handleChange} />
+          </div>
         </div>
-        <div>
-          <label className="block mb-1 font-medium">Facebook URL</label>
-          <Input name="facebook" value={config.facebook} onChange={handleChange} />
+        
+        <div className="space-y-4 mt-6">
+          <h2 className="text-lg font-medium">Featured Images</h2>
+          <div>
+            <label className="block mb-1 font-medium">Hero Image</label>
+            <Input name="heroImage" value={config.heroImage} onChange={handleChange} className="mb-2" />
+            <input type="file" accept="image/*" onChange={e => handleImageUpload(e, 'heroImage')} className="w-full" />
+            <div className="mt-2 p-2 border rounded">
+              <img src={config.heroImage} alt="Hero Preview" className="w-full h-24 object-cover rounded" />
+            </div>
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Secondary Image</label>
+            <Input name="secondaryImage" value={config.secondaryImage} onChange={handleChange} className="mb-2" />
+            <input type="file" accept="image/*" onChange={e => handleImageUpload(e, 'secondaryImage')} className="w-full" />
+            <div className="mt-2 p-2 border rounded">
+              <img src={config.secondaryImage} alt="Secondary Preview" className="w-full h-24 object-cover rounded" />
+            </div>
+          </div>
         </div>
-        <div>
-          <label className="block mb-1 font-medium">Twitter/X URL</label>
-          <Input name="twitter" value={config.twitter} onChange={handleChange} />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">TikTok URL</label>
-          <Input name="tiktok" value={config.tiktok} onChange={handleChange} />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">Hero Image</label>
-          <Input name="heroImage" value={config.heroImage} onChange={handleChange} />
-          <input type="file" accept="image/*" onChange={e => handleImageUpload(e, 'heroImage')} className="mt-2" />
-          <img src={config.heroImage} alt="Hero Preview" className="mt-2 h-24 rounded" />
-        </div>
-        <div>
-          <label className="block mb-1 font-medium">Secondary Image</label>
-          <Input name="secondaryImage" value={config.secondaryImage} onChange={handleChange} />
-          <input type="file" accept="image/*" onChange={e => handleImageUpload(e, 'secondaryImage')} className="mt-2" />
-          <img src={config.secondaryImage} alt="Secondary Preview" className="mt-2 h-24 rounded" />
-        </div>
-        <Button type="submit">Save Changes</Button>
+        
+        <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
         {saved && <div className="text-green-600 text-sm">Homepage settings saved (mock only)</div>}
       </form>
     </AdminLayout>
