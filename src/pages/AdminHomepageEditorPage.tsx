@@ -34,16 +34,14 @@ const AdminHomepageEditorPage = () => {
   const { data: homepageSettings, isLoading: isLoadingSettings } = useQuery({
     queryKey: ['homepageSettings'],
     queryFn: getHomepageSettings,
-    onSuccess: (data) => {
-      if (data) {
-        setConfig(data);
-      }
-    },
-    onError: (error) => {
-      console.error("Error loading homepage settings:", error);
-      toast.error("Failed to load settings");
-    }
   });
+
+  // Update config state when data is loaded
+  useEffect(() => {
+    if (homepageSettings) {
+      setConfig(homepageSettings);
+    }
+  }, [homepageSettings]);
 
   // Update settings mutation
   const mutation = useMutation({

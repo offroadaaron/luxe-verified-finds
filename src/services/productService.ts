@@ -19,13 +19,13 @@ export const getProducts = async (): Promise<Product[]> => {
   return data.map((item) => ({
     id: item.id,
     name: item.name,
-    brand: item.brand,
+    brand: item.brand || "",
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...item.additional_images] : 
+      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
       [item.image_url],
-    condition: item.condition || 'New',
+    condition: "New", // Default condition since it doesn't exist in the database
     authenticated: true,
     category: item.category
   }));
@@ -49,13 +49,13 @@ export const getProductById = async (id: string): Promise<Product> => {
   return {
     id: data.id,
     name: data.name,
-    brand: data.brand,
+    brand: data.brand || "",
     price: data.price,
     originalPrice: data.original_price,
     images: data.additional_images ? 
-      [data.image_url, ...data.additional_images] : 
+      [data.image_url, ...(Array.isArray(data.additional_images) ? data.additional_images : [])] : 
       [data.image_url],
-    condition: data.condition || 'New',
+    condition: "New", // Default condition
     authenticated: true,
     category: data.category
   };
@@ -78,13 +78,13 @@ export const getProductsByCategory = async (category: string): Promise<Product[]
   return data.map((item) => ({
     id: item.id,
     name: item.name,
-    brand: item.brand,
+    brand: item.brand || "",
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...item.additional_images] : 
+      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
       [item.image_url],
-    condition: item.condition || 'New',
+    condition: "New", // Default condition
     authenticated: true,
     category: item.category
   }));
@@ -108,13 +108,13 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
   return data.map((item) => ({
     id: item.id,
     name: item.name,
-    brand: item.brand,
+    brand: item.brand || "",
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...item.additional_images] : 
+      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
       [item.image_url],
-    condition: item.condition || 'New',
+    condition: "New", // Default condition
     authenticated: true,
     category: item.category
   }));
