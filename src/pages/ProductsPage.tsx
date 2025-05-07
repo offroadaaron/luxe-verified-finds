@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import ProductList from '@/components/products/ProductList';
@@ -128,6 +128,7 @@ const mockProducts: Product[] = [
 
 const ProductsPage = () => {
   const { brands, categories, conditions, genders } = productConstants;
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
   const {
     filters,
@@ -136,6 +137,37 @@ const ProductsPage = () => {
   } = useProductFilters(mockProducts);
   
   const filteredProducts = actions.filterProducts();
+  
+  // Update active filters display
+  useEffect(() => {
+    const active = [];
+    
+    if (filters.selectedCategory !== 'All Categories') {
+      active.push(filters.selectedCategory);
+    }
+    
+    if (filters.selectedBrand !== 'All Brands') {
+      active.push(filters.selectedBrand);
+    }
+    
+    if (filters.selectedCondition !== 'All Conditions') {
+      active.push(filters.selectedCondition);
+    }
+    
+    if (filters.selectedGender !== 'All') {
+      active.push(filters.selectedGender);
+    }
+    
+    if (filters.verifiedOnly) {
+      active.push('Verified Only');
+    }
+    
+    if (filters.priceRange[0] > 0 || filters.priceRange[1] < 50000) {
+      active.push(`$${filters.priceRange[0].toLocaleString()} - $${filters.priceRange[1].toLocaleString()}`);
+    }
+    
+    setActiveFilters(active);
+  }, [filters]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -156,7 +188,6 @@ const ProductsPage = () => {
               selectedSort={filters.selectedSort} 
               onValueChange={(val) => {
                 setters.setSelectedSort(val);
-                actions.applyFilters();
               }} 
             />
             
@@ -181,6 +212,28 @@ const ProductsPage = () => {
             />
           </div>
         </div>
+        
+        {/* Active filters display */}
+        {activeFilters.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {activeFilters.map((filter) => (
+              <span 
+                key={filter} 
+                className="px-3 py-1 bg-muted text-sm rounded-full flex items-center"
+              >
+                {filter}
+              </span>
+            ))}
+            {activeFilters.length > 0 && (
+              <button 
+                onClick={actions.resetFilters}
+                className="px-3 py-1 text-sm text-luxe-gold hover:underline"
+              >
+                Clear All
+              </button>
+            )}
+          </div>
+        )}
         
         <div className="flex flex-col md:flex-row gap-8">
           {/* Desktop Filters Sidebar */}

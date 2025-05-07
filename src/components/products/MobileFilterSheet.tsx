@@ -55,12 +55,15 @@ const MobileFilterSheet = ({
   conditions,
   genders
 }: MobileFilterSheetProps) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button
           variant="outline"
           className="border-luxe-gold/30 md:hidden"
+          onClick={() => setIsOpen(true)}
         >
           <Filter className="h-4 w-4 mr-2" />
           Filters
@@ -200,7 +203,10 @@ const MobileFilterSheet = ({
           <div className="pt-4 flex flex-col space-y-3">
             <Button 
               className="w-full bg-luxe-gold hover:bg-luxe-gold/90 text-black"
-              onClick={applyFilters}
+              onClick={() => {
+                applyFilters();
+                setIsOpen(false);
+              }}
             >
               Apply Filters
             </Button>
@@ -208,7 +214,10 @@ const MobileFilterSheet = ({
             <Button 
               variant="outline"
               className="w-full border-luxe-gold/30"
-              onClick={resetFilters}
+              onClick={() => {
+                resetFilters();
+                setIsOpen(false);
+              }}
             >
               Reset Filters
             </Button>

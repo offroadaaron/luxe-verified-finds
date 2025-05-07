@@ -12,53 +12,58 @@ export const useProductFilters = (productsData: Product[]) => {
   const [selectedSort, setSelectedSort] = useState('featured');
   const [selectedGender, setSelectedGender] = useState('All');
   const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // UI state
   const [brandSectionOpen, setBrandSectionOpen] = useState(true);
   const [categorySectionOpen, setCategorySectionOpen] = useState(true);
   const [conditionSectionOpen, setConditionSectionOpen] = useState(true);
 
-  // Initialize filters from URL params
+  // Initialize filters from URL params only once
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    const genderParam = searchParams.get('gender');
-    const brandParam = searchParams.get('brand');
-    const conditionParam = searchParams.get('condition');
-    const verifiedParam = searchParams.get('verified');
-    const sortParam = searchParams.get('sort');
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
-    
-    if (categoryParam) {
-      setSelectedCategory(categoryParam);
-    }
-    
-    if (genderParam) {
-      setSelectedGender(genderParam);
-    }
+    if (!isInitialized) {
+      const categoryParam = searchParams.get('category');
+      const genderParam = searchParams.get('gender');
+      const brandParam = searchParams.get('brand');
+      const conditionParam = searchParams.get('condition');
+      const verifiedParam = searchParams.get('verified');
+      const sortParam = searchParams.get('sort');
+      const minPrice = searchParams.get('minPrice');
+      const maxPrice = searchParams.get('maxPrice');
+      
+      if (categoryParam) {
+        setSelectedCategory(categoryParam);
+      }
+      
+      if (genderParam) {
+        setSelectedGender(genderParam);
+      }
 
-    if (brandParam) {
-      setSelectedBrand(brandParam);
-    }
+      if (brandParam) {
+        setSelectedBrand(brandParam);
+      }
 
-    if (conditionParam) {
-      setSelectedCondition(conditionParam);
-    }
+      if (conditionParam) {
+        setSelectedCondition(conditionParam);
+      }
 
-    if (verifiedParam === 'true') {
-      setVerifiedOnly(true);
-    }
+      if (verifiedParam === 'true') {
+        setVerifiedOnly(true);
+      }
 
-    if (sortParam) {
-      setSelectedSort(sortParam);
-    }
+      if (sortParam) {
+        setSelectedSort(sortParam);
+      }
 
-    if (minPrice && maxPrice) {
-      setPriceRange([parseInt(minPrice), parseInt(maxPrice)]);
+      if (minPrice && maxPrice) {
+        setPriceRange([parseInt(minPrice), parseInt(maxPrice)]);
+      }
+      
+      setIsInitialized(true);
     }
-  }, [searchParams]);
+  }, [searchParams, isInitialized]);
 
-  // Apply filters to URL and maintain state
+  // Apply filters to URL without page reload
   const applyFilters = () => {
     const params = new URLSearchParams();
     
@@ -94,7 +99,27 @@ export const useProductFilters = (productsData: Product[]) => {
     setSearchParams(params, { replace: true });
   };
 
-  // Filter products based on current state
+  // Update a single filter and don't apply automatically
+  const updateFilter = (type: string, value: string) => {
+    switch (type) {
+      case 'brand':
+        setSelectedBrand(value);
+        break;
+      case 'category':
+        setSelectedCategory(value);
+        break;
+      case 'condition':
+        setSelectedCondition(value);
+        break;
+      case 'gender':
+        setSelectedGender(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Filter products based on current filter state
   const filterProducts = () => {
     let filtered = [...productsData];
 
@@ -149,25 +174,6 @@ export const useProductFilters = (productsData: Product[]) => {
     setVerifiedOnly(false);
     setSelectedSort('featured');
     setSearchParams({});
-  };
-
-  const updateFilter = (type: string, value: string) => {
-    switch (type) {
-      case 'brand':
-        setSelectedBrand(value);
-        break;
-      case 'category':
-        setSelectedCategory(value);
-        break;
-      case 'condition':
-        setSelectedCondition(value);
-        break;
-      case 'gender':
-        setSelectedGender(value);
-        break;
-      default:
-        break;
-    }
   };
 
   return {

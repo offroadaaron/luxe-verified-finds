@@ -67,7 +67,6 @@ const DesktopFilters = ({
             onValueChange={(value) => {
               if (value) {
                 updateFilter('gender', value);
-                setTimeout(() => applyFilters(), 0);
               }
             }}
             className="flex gap-2"
@@ -120,10 +119,7 @@ const DesktopFilters = ({
                   id={brand}
                   name="brand"
                   checked={selectedBrand === brand}
-                  onChange={() => {
-                    updateFilter('brand', brand);
-                    setTimeout(() => applyFilters(), 0);
-                  }}
+                  onChange={() => updateFilter('brand', brand)}
                   className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                 />
                 <Label htmlFor={brand}>{brand}</Label>
@@ -147,10 +143,7 @@ const DesktopFilters = ({
                   id={category}
                   name="category"
                   checked={selectedCategory === category}
-                  onChange={() => {
-                    updateFilter('category', category);
-                    setTimeout(() => applyFilters(), 0);
-                  }}
+                  onChange={() => updateFilter('category', category)}
                   className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                 />
                 <Label htmlFor={category}>{category}</Label>
@@ -174,10 +167,7 @@ const DesktopFilters = ({
                   id={condition}
                   name="condition"
                   checked={selectedCondition === condition}
-                  onChange={() => {
-                    updateFilter('condition', condition);
-                    setTimeout(() => applyFilters(), 0);
-                  }}
+                  onChange={() => updateFilter('condition', condition)}
                   className="w-4 h-4 text-luxe-gold focus:ring-luxe-gold"
                 />
                 <Label htmlFor={condition}>{condition}</Label>
@@ -192,10 +182,7 @@ const DesktopFilters = ({
             <Checkbox 
               id="verified-only" 
               checked={verifiedOnly}
-              onCheckedChange={(checked) => {
-                setVerifiedOnly(!!checked);
-                setTimeout(() => applyFilters(), 0);
-              }}
+              onCheckedChange={(checked) => setVerifiedOnly(!!checked)}
             />
             <Label htmlFor="verified-only">Verified Authentic Only</Label>
           </div>
