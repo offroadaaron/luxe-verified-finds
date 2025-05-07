@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut, LayoutDashboard, ShoppingCart, Users, Settings, Menu, X } from "lucide-react";
+import { LogOut, LayoutDashboard, ShoppingCart, Users, Settings, Menu, X, Home } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const menu = [
@@ -10,6 +10,7 @@ const menu = [
   { label: "Orders", icon: <ShoppingCart className="mr-2 h-4 w-4" />, to: "/admin/orders" },
   { label: "Customers", icon: <Users className="mr-2 h-4 w-4" />, to: "/admin/customers" },
   { label: "Settings", icon: <Settings className="mr-2 h-4 w-4" />, to: "/admin/settings" },
+  { label: "Homepage", icon: <Home className="mr-2 h-4 w-4" />, to: "/admin/homepage" },
 ];
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {

@@ -1,26 +1,63 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Temporary context for homepage config (could be lifted to App or a global store)
-const homepageConfig = {
+// Interface for hero configuration
+interface HeroConfig {
+  heroImage: string;
+  heading: string;
+  subheading: string;
+}
+
+// Default configuration
+const defaultConfig: HeroConfig = {
   heroImage: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+  heading: "Timeless Luxury, Verified Authenticity",
+  subheading: "Discover handpicked, authenticated luxury pieces from the world's most prestigious brands."
 };
 
 const Hero = () => {
-  // In a real app, get this from context or props
-  const heroImage = homepageConfig.heroImage;
+  const [config, setConfig] = useState<HeroConfig>(defaultConfig);
+  
+  // In a real app, we would fetch this from an API or context
+  // For now, we'll check localStorage to simulate admin updates
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('adminSettings');
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        if (parsedSettings.homepageImages?.heroImage) {
+          setConfig({
+            heroImage: parsedSettings.homepageImages.heroImage,
+            heading: parsedSettings.heroText?.heading || defaultConfig.heading,
+            subheading: parsedSettings.heroText?.subheading || defaultConfig.subheading
+          });
+        }
+      } catch (e) {
+        console.error("Error parsing saved settings", e);
+      }
+    }
+  }, []);
+
   return (
     <div className="relative bg-luxe-charcoal text-white">
-      <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url('${heroImage}')` }} />
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-30" 
+        style={{ backgroundImage: `url('${config.heroImage}')` }} 
+      />
       <div className="relative luxe-container py-24 md:py-32">
         <div className="max-w-lg animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6">
-            Timeless Luxury, <span className="text-luxe-gold">Verified</span> Authenticity
+            {config.heading.split('Verified').map((part, i, arr) => 
+              i === arr.length - 1 
+                ? <>{part}</> 
+                : <>{part}<span className="text-luxe-gold">Verified</span></>
+            )}
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-200">
-            Discover handpicked, authenticated luxury pieces from the world's most prestigious brands.
+            {config.subheading}
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <Button 
