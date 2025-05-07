@@ -23,12 +23,25 @@ export const getProducts = async (): Promise<Product[]> => {
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
+      [item.image_url, ...processImageArray(item.additional_images)] : 
       [item.image_url],
     condition: "New", // Default condition since it doesn't exist in the database
     authenticated: true,
     category: item.category
   }));
+};
+
+/**
+ * Helper function to process image array from JSON 
+ * and ensure it only contains strings
+ */
+const processImageArray = (images: any): string[] => {
+  if (!Array.isArray(images)) {
+    return [];
+  }
+  
+  // Filter out non-string values
+  return images.filter(img => typeof img === 'string');
 };
 
 /**
@@ -53,7 +66,7 @@ export const getProductById = async (id: string): Promise<Product> => {
     price: data.price,
     originalPrice: data.original_price,
     images: data.additional_images ? 
-      [data.image_url, ...(Array.isArray(data.additional_images) ? data.additional_images : [])] : 
+      [data.image_url, ...processImageArray(data.additional_images)] : 
       [data.image_url],
     condition: "New", // Default condition
     authenticated: true,
@@ -82,7 +95,7 @@ export const getProductsByCategory = async (category: string): Promise<Product[]
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
+      [item.image_url, ...processImageArray(item.additional_images)] : 
       [item.image_url],
     condition: "New", // Default condition
     authenticated: true,
@@ -112,7 +125,7 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
     price: item.price,
     originalPrice: item.original_price,
     images: item.additional_images ? 
-      [item.image_url, ...(Array.isArray(item.additional_images) ? item.additional_images : [])] : 
+      [item.image_url, ...processImageArray(item.additional_images)] : 
       [item.image_url],
     condition: "New", // Default condition
     authenticated: true,
