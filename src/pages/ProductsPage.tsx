@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import ProductList from '@/components/products/ProductList';
@@ -7,6 +7,124 @@ import MobileFilterSheet from '@/components/products/MobileFilterSheet';
 import DesktopFilters from '@/components/products/DesktopFilters';
 import SortSelect from '@/components/products/SortSelect';
 import { useProductFilters, productConstants } from '@/hooks/useProductFilters';
+import { Product } from '@/components/ProductCard';
+
+// Mock product data - in a real app this would come from an API
+const mockProducts: Product[] = [
+  {
+    id: '1',
+    name: 'Birkin 35',
+    brand: 'Hermès',
+    price: 15000,
+    images: ['https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1035&auto=format&fit=crop'],
+    condition: 'Excellent',
+    authenticated: true,
+    category: 'Handbags',
+    gender: 'Womens'
+  },
+  {
+    id: '2',
+    name: 'Datejust 36',
+    brand: 'Rolex',
+    price: 12000,
+    originalPrice: 14500,
+    images: ['https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?q=80&w=1170&auto=format&fit=crop'],
+    condition: 'Like New',
+    authenticated: true,
+    category: 'Watches',
+    gender: 'Mens'
+  },
+  {
+    id: '3',
+    name: 'Dionysus GG Supreme',
+    brand: 'Gucci',
+    price: 2500,
+    images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1169&auto=format&fit=crop'],
+    condition: 'Very Good',
+    authenticated: true,
+    category: 'Handbags',
+    gender: 'Womens'
+  },
+  {
+    id: '4',
+    name: 'Love Bracelet',
+    brand: 'Cartier',
+    price: 6800,
+    images: ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1096&auto=format&fit=crop'],
+    condition: 'Excellent',
+    authenticated: true,
+    category: 'Jewelry',
+    gender: 'Womens'
+  },
+  {
+    id: '5',
+    name: 'Classic Flap Bag',
+    brand: 'Chanel',
+    price: 8500,
+    originalPrice: 9000,
+    images: ['https://images.unsplash.com/photo-1575032617751-6ddec2089882?q=80&w=1170&auto=format&fit=crop'],
+    condition: 'Good',
+    authenticated: true,
+    category: 'Handbags',
+    gender: 'Womens'
+  },
+  {
+    id: '6',
+    name: 'Royal Oak',
+    brand: 'Audemars Piguet',
+    price: 35000,
+    images: ['https://images.unsplash.com/photo-1623998021446-45cd9b714efd?q=80&w=1072&auto=format&fit=crop'],
+    condition: 'Like New',
+    authenticated: true,
+    category: 'Watches',
+    gender: 'Mens'
+  },
+  {
+    id: '7',
+    name: 'B.Zero1 Ring',
+    brand: 'Bvlgari',
+    price: 2200,
+    images: ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1096&auto=format&fit=crop'],
+    condition: 'Excellent',
+    authenticated: false,
+    category: 'Jewelry',
+    gender: 'Womens'
+  },
+  {
+    id: '8',
+    name: 'Silk Scarf',
+    brand: 'Hermès',
+    price: 450,
+    images: ['https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1035&auto=format&fit=crop'],
+    condition: 'Very Good',
+    authenticated: true,
+    category: 'Accessories',
+    gender: 'Womens'
+  },
+  {
+    id: '9',
+    name: 'Submariner',
+    brand: 'Rolex',
+    price: 15000,
+    originalPrice: 16500,
+    images: ['https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?q=80&w=1170&auto=format&fit=crop'],
+    condition: 'Excellent',
+    authenticated: true,
+    category: 'Watches',
+    gender: 'Mens'
+  },
+  {
+    id: '10',
+    name: 'Princetown Mules',
+    brand: 'Gucci',
+    price: 850,
+    images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1169&auto=format&fit=crop'],
+    condition: 'Good',
+    authenticated: false,
+    category: 'Accessories',
+    gender: 'Womens'
+  },
+];
 
 const ProductsPage = () => {
   const { brands, categories, conditions, genders } = productConstants;
@@ -15,7 +133,7 @@ const ProductsPage = () => {
     filters,
     setters,
     actions
-  } = useProductFilters();
+  } = useProductFilters(mockProducts);
   
   const filteredProducts = actions.filterProducts();
 
