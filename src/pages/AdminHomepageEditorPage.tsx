@@ -4,8 +4,12 @@ import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getHomepageSettings, updateHomepageSettings, HomepageSettings } from "@/services/settingsService";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
 
-const defaultHomepageConfig = {
+const defaultHomepageConfig: HomepageSettings = {
   socialLinks: {
     instagram: "https://instagram.com/luxeverified",
     facebook: "https://facebook.com/luxeverified",
@@ -23,27 +27,35 @@ const defaultHomepageConfig = {
 };
 
 const AdminHomepageEditorPage = () => {
-  const [config, setConfig] = useState(defaultHomepageConfig);
-  const [saved, setSaved] = useState(false);
+  const { isAdmin, isLoading } = useAuth();
+  const [config, setConfig] = useState<HomepageSettings>(defaultHomepageConfig);
 
-  // Load any existing settings from localStorage
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('adminSettings');
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        if (parsedSettings.socialLinks || parsedSettings.homepageImages || parsedSettings.heroText) {
-          setConfig({
-            socialLinks: parsedSettings.socialLinks || defaultHomepageConfig.socialLinks,
-            homepageImages: parsedSettings.homepageImages || defaultHomepageConfig.homepageImages,
-            heroText: parsedSettings.heroText || defaultHomepageConfig.heroText
-          });
-        }
-      } catch (e) {
-        console.error("Error parsing saved settings", e);
+  // Fetch homepage settings from the database
+  const { data: homepageSettings, isLoading: isLoadingSettings } = useQuery({
+    queryKey: ['homepageSettings'],
+    queryFn: getHomepageSettings,
+    onSuccess: (data) => {
+      if (data) {
+        setConfig(data);
       }
+    },
+    onError: (error) => {
+      console.error("Error loading homepage settings:", error);
+      toast.error("Failed to load settings");
     }
-  }, []);
+  });
+
+  // Update settings mutation
+  const mutation = useMutation({
+    mutationFn: updateHomepageSettings,
+    onSuccess: () => {
+      toast.success("Homepage settings saved successfully");
+    },
+    onError: (error) => {
+      console.error("Error saving homepage settings:", error);
+      toast.error("Failed to save settings");
+    }
+  });
 
   const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,7 +66,6 @@ const AdminHomepageEditorPage = () => {
         [name]: value 
       }
     }));
-    setSaved(false);
   };
 
   const handleHeroTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -66,7 +77,6 @@ const AdminHomepageEditorPage = () => {
         [name]: value 
       }
     }));
-    setSaved(false);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +88,6 @@ const AdminHomepageEditorPage = () => {
         [name]: value 
       }
     }));
-    setSaved(false);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
@@ -93,7 +102,6 @@ const AdminHomepageEditorPage = () => {
             [key]: reader.result as string 
           }
         }));
-        setSaved(false);
       };
       reader.readAsDataURL(file);
     }
@@ -101,29 +109,22 @@ const AdminHomepageEditorPage = () => {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Save to localStorage to simulate backend storage
-    try {
-      // Get existing settings first to avoid overwriting other settings
-      const existingSettings = localStorage.getItem('adminSettings');
-      const settings = existingSettings ? JSON.parse(existingSettings) : {};
-      
-      // Update with our new settings
-      const updatedSettings = {
-        ...settings,
-        socialLinks: config.socialLinks,
-        homepageImages: config.homepageImages,
-        heroText: config.heroText
-      };
-      
-      localStorage.setItem('adminSettings', JSON.stringify(updatedSettings));
-      setSaved(true);
-      toast.success("Homepage settings saved successfully");
-    } catch (e) {
-      toast.error("Error saving settings");
-      console.error(e);
-    }
+    mutation.mutate(config);
   };
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <p>Loading...</p>
+        </div>
+      </AdminLayout>
+    );
+  }
+  
+  if (!isAdmin) {
+    return <Navigate to="/admin/login" replace />;
+  }
 
   return (
     <AdminLayout>
@@ -191,8 +192,13 @@ const AdminHomepageEditorPage = () => {
           </div>
         </div>
         
-        <Button type="submit" className="w-full sm:w-auto">Save Changes</Button>
-        {saved && <div className="text-green-600 text-sm">Homepage settings saved</div>}
+        <Button 
+          type="submit" 
+          className="w-full sm:w-auto" 
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending ? 'Saving...' : 'Save Changes'}
+        </Button>
       </form>
     </AdminLayout>
   );

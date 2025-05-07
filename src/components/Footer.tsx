@@ -1,6 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getHomepageSettings } from '@/services/settingsService';
 
 // Default social links
 const defaultSocialLinks = {
@@ -11,23 +13,14 @@ const defaultSocialLinks = {
 };
 
 const Footer = () => {
-  const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
+  // Fetch settings from the database
+  const { data: settings } = useQuery({
+    queryKey: ['homepageSettings'],
+    queryFn: getHomepageSettings,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
   
-  // In a real app, we would fetch this from an API or context
-  // For now, we'll check localStorage to simulate admin updates
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('adminSettings');
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        if (parsedSettings.socialLinks) {
-          setSocialLinks(parsedSettings.socialLinks);
-        }
-      } catch (e) {
-        console.error("Error parsing saved settings", e);
-      }
-    }
-  }, []);
+  const socialLinks = settings?.socialLinks || defaultSocialLinks;
   
   return (
     <footer className="bg-luxe-black text-white">

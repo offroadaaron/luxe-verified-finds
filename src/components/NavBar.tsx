@@ -2,12 +2,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Search, ShoppingBag, Menu, X, User } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from '@/components/ui/sonner';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, signOut, isAdmin } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,6 +28,17 @@ const NavBar = () => {
     
     if (isMenuOpen) {
       setIsMenuOpen(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success('Successfully signed out');
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error('Failed to sign out');
     }
   };
 
@@ -81,6 +95,11 @@ const NavBar = () => {
             <Link to="/about" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               About Us
             </Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-sm font-medium hover:text-luxe-gold transition-colors">
+                Admin Dashboard
+              </Link>
+            )}
           </div>
 
           {/* Desktop Right Actions */}
@@ -94,11 +113,19 @@ const NavBar = () => {
                 0
               </span>
             </Link>
-            <Link to="/login">
-              <Button variant="outline" className="border-luxe-gold text-luxe-gold hover:bg-luxe-gold hover:text-white">
-                <User className="h-4 w-4 mr-2" /> Login
-              </Button>
-            </Link>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <Button variant="ghost" onClick={handleSignOut} className="hover:text-luxe-gold">
+                  <LogOut className="h-4 w-4 mr-2" /> Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Link to="/auth">
+                <Button variant="outline" className="border-luxe-gold text-luxe-gold hover:bg-luxe-gold hover:text-white">
+                  <User className="h-4 w-4 mr-2" /> Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -164,6 +191,15 @@ const NavBar = () => {
           >
             About Us
           </Link>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold"
+              onClick={toggleMenu}
+            >
+              Admin Dashboard
+            </Link>
+          )}
           <div className="flex items-center justify-between px-3 py-2">
             <button className="hover:text-luxe-gold">
               <Search className="h-5 w-5" />
@@ -174,13 +210,25 @@ const NavBar = () => {
                 0
               </span>
             </Link>
-            <Link 
-              to="/login" 
-              className="text-sm font-medium hover:text-luxe-gold"
-              onClick={toggleMenu}
-            >
-              Login / Register
-            </Link>
+            {user ? (
+              <button 
+                onClick={() => {
+                  handleSignOut();
+                  toggleMenu();
+                }}
+                className="text-sm font-medium hover:text-luxe-gold flex items-center"
+              >
+                <LogOut className="h-4 w-4 mr-2" /> Sign Out
+              </button>
+            ) : (
+              <Link 
+                to="/auth" 
+                className="text-sm font-medium hover:text-luxe-gold"
+                onClick={toggleMenu}
+              >
+                Login / Register
+              </Link>
+            )}
           </div>
         </div>
       </div>
