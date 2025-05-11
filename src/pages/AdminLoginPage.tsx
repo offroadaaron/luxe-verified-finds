@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/sonner";
 
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "luxe123";
@@ -14,11 +16,16 @@ const AdminLoginPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      // Store admin status in localStorage
       localStorage.setItem("isAdmin", "true");
+      toast.success("Login successful");
       navigate("/admin");
     } else {
-      setError("Invalid credentials");
+      setError("Invalid username or password");
+      toast.error("Login failed");
     }
   };
 
