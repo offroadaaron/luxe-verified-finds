@@ -44,22 +44,13 @@ const Hero = () => {
           <p className="text-lg md:text-xl mb-8 text-gray-200">
             {subheading}
           </p>
-          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+          <div>
             <Button 
               className="bg-luxe-gold hover:bg-luxe-gold/90 text-black px-8 py-6" 
               asChild
             >
               <Link to="/products">
                 Explore Collection <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button 
-              variant="outline" 
-              className="border-white hover:bg-white/10 text-white px-8 py-6"
-              asChild
-            >
-              <Link to="/about">
-                Our Authentication Process
               </Link>
             </Button>
           </div>
