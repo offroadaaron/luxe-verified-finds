@@ -62,36 +62,6 @@ const NavBar = () => {
             >
               All Products
             </button>
-            <button 
-              onClick={() => navigateToProducts({ gender: 'Mens' })} 
-              className="text-sm font-medium hover:text-luxe-gold transition-colors"
-            >
-              Mens
-            </button>
-            <button 
-              onClick={() => navigateToProducts({ gender: 'Womens' })} 
-              className="text-sm font-medium hover:text-luxe-gold transition-colors"
-            >
-              Womens
-            </button>
-            <button 
-              onClick={() => navigateToProducts({ category: 'Handbags' })} 
-              className="text-sm font-medium hover:text-luxe-gold transition-colors"
-            >
-              Handbags
-            </button>
-            <button 
-              onClick={() => navigateToProducts({ category: 'Watches' })} 
-              className="text-sm font-medium hover:text-luxe-gold transition-colors"
-            >
-              Watches
-            </button>
-            <button 
-              onClick={() => navigateToProducts({ category: 'Jewelry' })} 
-              className="text-sm font-medium hover:text-luxe-gold transition-colors"
-            >
-              Jewelry
-            </button>
             <Link to="/about" className="text-sm font-medium hover:text-luxe-gold transition-colors">
               About Us
             </Link>
@@ -153,36 +123,6 @@ const NavBar = () => {
             onClick={() => navigateToProducts()}
           >
             All Products
-          </button>
-          <button
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
-            onClick={() => navigateToProducts({ gender: 'Mens' })}
-          >
-            Mens
-          </button>
-          <button
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
-            onClick={() => navigateToProducts({ gender: 'Womens' })}
-          >
-            Womens
-          </button>
-          <button
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
-            onClick={() => navigateToProducts({ category: 'Handbags' })}
-          >
-            Handbags
-          </button>
-          <button
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
-            onClick={() => navigateToProducts({ category: 'Watches' })}
-          >
-            Watches
-          </button>
-          <button
-            className="block px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-luxe-gold w-full text-left"
-            onClick={() => navigateToProducts({ category: 'Jewelry' })}
-          >
-            Jewelry
           </button>
           <Link
             to="/about"

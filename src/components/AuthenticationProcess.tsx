@@ -52,8 +52,8 @@ const AuthenticationProcess = () => {
         
         <div className="mt-12 text-center">
           <Link to="/about">
-            <Button className="bg-black hover:bg-black/90 text-white font-medium px-8 py-6 h-auto">
-              Learn More About Our Process
+            <Button className="bg-luxe-gold hover:bg-luxe-gold/90 text-black px-8 py-6 h-auto">
+              Our Authentication Process
             </Button>
           </Link>
         </div>
