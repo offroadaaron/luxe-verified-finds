@@ -1,8 +1,6 @@
 
 import React from 'react';
 import { CheckCircle, Search, Award, Shield } from 'lucide-react';
-import { Button } from './ui/button';
-import { Link } from 'react-router-dom';
 
 const steps = [
   {
@@ -48,14 +46,6 @@ const AuthenticationProcess = () => {
               <p className="text-muted-foreground">{step.description}</p>
             </div>
           ))}
-        </div>
-        
-        <div className="mt-12 text-center">
-          <Link to="/about">
-            <Button className="bg-luxe-gold hover:bg-luxe-gold/90 text-black px-8 py-6 h-auto">
-              Our Authentication Process
-            </Button>
-          </Link>
         </div>
       </div>
     </section>
